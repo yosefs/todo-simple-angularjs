@@ -1,0 +1,1 @@
+very basic example for todo app with angularjs
