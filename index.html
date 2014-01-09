@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.js"></script>
+        <script>
+            var phonecatControllers = angular.module('MyApp', []);
+            phonecatControllers.controller('ItemController', ['$scope', function($scope) {
+                    var itemsIdCounter = 1;
+                    if (!$scope.items) {
+                        //start temp code (should be replaced by dynmaic code)
+                        $scope.items = [{id: 1, name: 'name1', isEdit: false}, {id: 2, name: 'name2', isEdit: false}];
+                        itemsIdCounter = 3;
+                        //end temp code
+
+                    }
+                    $scope.createItem = function() {
+                        $scope.items.push({id: itemsIdCounter, name: $scope.item.name, isEdit: false});
+                        itemsIdCounter++;
+                    }
+
+                    $scope.deleteItem = function(item) {
+                        for (var i = 0; i < $scope.items.length; i++) {
+                            if ($scope.items[i].id == item.id) {
+                                $scope.items.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
+
+
+                    $scope.editItem = function(item) {
+                        item.isEdit = true;
+                    }
+
+                    $scope.finishUpdateItem = function(item) {
+                        item.isEdit = false;
+                    }
+
+                }]);
+
+        </script>
+    </head>
+    <body ng-controller="ItemController">
+        <form>
+            <input type="text" placeholder="write item name" ng-model="item.name"/>
+            <button type="submit" ng-click="createItem()">create new item</button>
+        </form>
+        <div ng-repeat="item in items">
+            <div> 
+                <span ng-show="!item.isEdit">
+                    <span> {{item.name}} </span> 
+                    <button type="button" ng-click="editItem(item)"> edit </button>
+                    <button type="button"  ng-click="deleteItem(item)"> delete </button>
+                </span>
+                <span ng-show="item.isEdit">
+                    <input type="text" ng-model="item.name" placeholder="update item name" value="{{item.name}}" />
+                    <button type="button" ng-click="finishUpdateItem(item)"> update </button>
+                </span>
+            </div>
+        </div>
+    </body>
+</html>
